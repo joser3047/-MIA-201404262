@@ -3,6 +3,71 @@
 #include <string.h>
 
 
+struct PARTITION
+{
+	char 	part_status;
+	char 	part_type;
+	char 	part_fit;
+    int     part_start;
+    int     part_size;
+    char    part_name[16];
+};
+
+struct MBR{
+	int 	mbr_tamano;
+	time_t*	mbr_fecha_creacion;
+	int 	mbr_disk_signature;
+	struct 	PARTITION mbr_partition_1;
+	struct 	PARTITION mbr_partition_2;
+	struct  PARTITION mbr_partition_3;
+	struct 	PARTITION mbr_partition_4;
+	char 	part_nombre[50];
+	int 	part_inicio;
+	int 	part_tam;
+};
+
+struct EBR
+{
+	char 	part_status;
+	char 	part_fit;
+    int     part_start;
+	int 	part_size;
+	int 	part_next;
+    int     part_previous;
+	char	part_name[16];
+};
+
+struct SuperBloque{
+	int	    s_filesystem_type;
+	int 	s_inodes_count;
+	int 	s_blocks_count;
+	int 	s_free_blocks_count;
+	int 	s_free_inodes_count;
+	time_t*	s_mtime;
+	time_t*	s_umtime;
+	int 	s_mnt_count;
+	int 	s_magic;
+	int 	s_inode_size;
+	int 	s_block_size;
+	int 	s_first_ino;
+	int 	s_first_blo;
+	int 	s_bm_inode_start;
+	int 	s_bm_block_start;
+	int 	s_inode_start;
+	int 	s_block_start;
+};
+
+
+struct Journal{
+	int 	Journal_tipo_operacion;
+	int 	Journal_tipo;
+	char	Journal_nombre[10];
+	int 	Journal_contenido;
+	time_t*	Journal_fecha;
+	char	Journal_propietario[10];
+	int 	Journal_Permisos;
+};
+
 char comando[];
 
 void main()
@@ -126,7 +191,5 @@ void main()
                 contador = 1;
     }else{
                 contador = 1024;
-    }
-
-    }
+    }}
 }
