@@ -234,5 +234,7 @@ void main()
     }
     }
     }
+    else if(strcasecmp(token, "rmdisk") == 0){
+    }
 
 }
