@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <math.h>
 
 
 struct PARTITION
@@ -69,6 +73,8 @@ struct Journal{
 };
 
 char comando[];
+char buffer[1];
+int tam;
 
 void main()
 {
@@ -182,14 +188,51 @@ void main()
     if(dir[0] == '/'){
         char com[100];
         strcpy (com,  "mkdir -p '");
-        strncat(com, dir, strlen(path)-1);
-        strcat(com, "'");
+        strcat(com, dir);
+        strcat(com, "");
         system(com);
     }
     }
     if(strcasecmp(unidad,"k")==0){
                 contador = 1;
-    }else{
+    }else if(strcasecmp(unidad,"m")==0){
                 contador = 1024;
-    }}
+    }
+    else{
+    printf("Error de unidad"); contador = 1024;
+    }
+        int tam = 0;
+        tam = atoi(tamano)*1024*contador;
+        char ruta[100] = "mkdir -p ";
+        strcat(ruta,dir);
+        system(ruta);
+        strcat(dir,nombre);
+        FILE *Fichero = fopen (dir, "w+b"); int i=0;
+        while (i<tam/4){
+         fwrite("0", 1, sizeof(i),Fichero);
+         i++;
+        }
+        fclose(Fichero);
+    }
+    else if(strcasecmp(token, "rmdisk") == 0){
+    tokens = comando;
+    tokens = strtok(NULL, " ");
+    if(tokens != NULL){
+        path = tokens;
+    }
+    tokens = strtok(path, "::");
+    if(strcasecmp(tokens, "-path") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(dir, tokens);}
+    if(fopen(dir, "r")==NULL){
+    printf("El disco no existe");
+    } else{
+    if(remove(dir) == 0){
+    printf("Disco Eliminado");
+    }else{
+    printf("Error");
+    }
+    }
+    }
+
 }
