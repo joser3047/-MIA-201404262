@@ -75,6 +75,21 @@ struct Journal{
 char comando[];
 int tam;
 
+void particion(char size[], char unit[], char name[], char path[], char type[], char fit[], char delet[], char add[]){
+if((strcasecmp(size,"")!=0)&&(strcasecmp(path,"")!=0)&&(strcasecmp(name,"")!=0)){
+struct MBR mbr;
+FILE *disco;
+    if((fopen (path, "rb+")) != NULL){
+        disco = fopen (path, "rb+");
+    }else{
+        printf("Error");
+    }
+
+fread (&mbr, sizeof(mbr), 1,disco);
+
+}
+}
+
 void analizar(char comando[])
 {
 
@@ -556,7 +571,7 @@ void analizar(char comando[])
     }else{
     printf("delete incorrecto");
     }
-
+    particion(tamano, unidad, nombre, dir, tipo, ajuste, borrar, agregar);
     }
     }
 
