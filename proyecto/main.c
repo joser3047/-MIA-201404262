@@ -76,9 +76,9 @@ char comando[];
 int tam;
 
 void particion(char size[], char unit[], char name[], char path[], char type[], char fit[], char delet[], char add[]){
-if((strcasecmp(size,"")!=0)&&(strcasecmp(path,"")!=0)&&(strcasecmp(name,"")!=0)){
 struct MBR mbr;
 FILE *disco;
+if((strcasecmp(size,"")!=0)&&(strcasecmp(path,"")!=0)&&(strcasecmp(name,"")!=0)){
     if((fopen (path, "rb+")) != NULL){
         disco = fopen (path, "rb+");
     }else{
@@ -102,9 +102,56 @@ printf("Se creo la particion", name);
 printf("Tamaño insuficiente");
 }
 }
+else if(mbr.mbr_partition_2.part_status=='0'){
+if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+strcpy(mbr.mbr_partition_1.part_name, name);
+mbr.mbr_partition_1.part_start = sizeof(mbr);
+mbr.mbr_partition_1.part_status = '1';
+mbr.mbr_partition_1.part_size = atoi(size)*1024;
+mbr.mbr_partition_1.part_type = 'p';
+mbr.mbr_partition_1.part_fit = fit;
+printf("Se creo la particion", name);
+}else
+{
+printf("Tamaño insuficiente");
+}
+}
+else if(mbr.mbr_partition_3.part_status=='0'){
+if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+strcpy(mbr.mbr_partition_1.part_name, name);
+mbr.mbr_partition_1.part_start = sizeof(mbr);
+mbr.mbr_partition_1.part_status = '1';
+mbr.mbr_partition_1.part_size = atoi(size)*1024;
+mbr.mbr_partition_1.part_type = 'p';
+mbr.mbr_partition_1.part_fit = fit;
+printf("Se creo la particion", name);
+}else
+{
+printf("Tamaño insuficiente");
+}
+}
+else if(mbr.mbr_partition_4.part_status=='0'){
+if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+strcpy(mbr.mbr_partition_1.part_name, name);
+mbr.mbr_partition_1.part_start = sizeof(mbr);
+mbr.mbr_partition_1.part_status = '1';
+mbr.mbr_partition_1.part_size = atoi(size)*1024;
+mbr.mbr_partition_1.part_type = 'p';
+mbr.mbr_partition_1.part_fit = fit;
+printf("Se creo la particion", name);
+}else
+{
+printf("Tamaño insuficiente");
+}
+}
+else { printf("particiones llenas");}
+}
 
 }
-}
+
+fseek(disco,0,SEEK_SET);
+fwrite(&mbr,sizeof(mbr),1,disco);
+fclose(disco);
 }
 
 void analizar(char comando[])
