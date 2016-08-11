@@ -74,6 +74,8 @@ struct Journal{
 
 char comando[];
 int tam;
+char letra[] = "abcdefghijklmnopqrstuvwxyz";
+char monta [10][10][50] = {""};
 
 void particion(char size[], char unit[], char name[], char path[], char type[], char fit[], char delet[], char add[]){
 struct MBR mbr;
@@ -96,7 +98,7 @@ mbr.mbr_partition_1.part_status = '1';
 mbr.mbr_partition_1.part_size = atoi(size)*1024;
 mbr.mbr_partition_1.part_type = 'p';
 mbr.mbr_partition_1.part_fit = fit;
-printf("Se creo la particion", name);
+printf("Se creo la particion 1", name);
 }else
 {
 printf("Tamaño insuficiente");
@@ -104,13 +106,13 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_2.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
-strcpy(mbr.mbr_partition_1.part_name, name);
-mbr.mbr_partition_1.part_start = sizeof(mbr);
-mbr.mbr_partition_1.part_status = '1';
-mbr.mbr_partition_1.part_size = atoi(size)*1024;
-mbr.mbr_partition_1.part_type = 'p';
-mbr.mbr_partition_1.part_fit = fit;
-printf("Se creo la particion", name);
+strcpy(mbr.mbr_partition_2.part_name, name);
+mbr.mbr_partition_2.part_start = sizeof(mbr);
+mbr.mbr_partition_2.part_status = '1';
+mbr.mbr_partition_2.part_size = atoi(size)*1024;
+mbr.mbr_partition_2.part_type = 'p';
+mbr.mbr_partition_2.part_fit = fit;
+printf("Se creo la particion 2", name);
 }else
 {
 printf("Tamaño insuficiente");
@@ -118,13 +120,13 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_3.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
-strcpy(mbr.mbr_partition_1.part_name, name);
-mbr.mbr_partition_1.part_start = sizeof(mbr);
-mbr.mbr_partition_1.part_status = '1';
-mbr.mbr_partition_1.part_size = atoi(size)*1024;
-mbr.mbr_partition_1.part_type = 'p';
-mbr.mbr_partition_1.part_fit = fit;
-printf("Se creo la particion", name);
+strcpy(mbr.mbr_partition_3.part_name, name);
+mbr.mbr_partition_3.part_start = sizeof(mbr);
+mbr.mbr_partition_3.part_status = '1';
+mbr.mbr_partition_3.part_size = atoi(size)*1024;
+mbr.mbr_partition_3.part_type = 'p';
+mbr.mbr_partition_3.part_fit = fit;
+printf("Se creo la particion 3", name);
 }else
 {
 printf("Tamaño insuficiente");
@@ -132,13 +134,13 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_4.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
-strcpy(mbr.mbr_partition_1.part_name, name);
-mbr.mbr_partition_1.part_start = sizeof(mbr);
-mbr.mbr_partition_1.part_status = '1';
-mbr.mbr_partition_1.part_size = atoi(size)*1024;
-mbr.mbr_partition_1.part_type = 'p';
-mbr.mbr_partition_1.part_fit = fit;
-printf("Se creo la particion", name);
+strcpy(mbr.mbr_partition_4.part_name, name);
+mbr.mbr_partition_4.part_start = sizeof(mbr);
+mbr.mbr_partition_4.part_status = '1';
+mbr.mbr_partition_4.part_size = atoi(size)*1024;
+mbr.mbr_partition_4.part_type = 'p';
+mbr.mbr_partition_4.part_fit = fit;
+printf("Se creo la particion 4", name);
 }else
 {
 printf("Tamaño insuficiente");
@@ -635,6 +637,7 @@ void analizar(char comando[])
 
 
     else if(strcasecmp(token, "mount") == 0){
+    struct MBR m;
     tokens = comando;
     tokens = strtok(NULL, " ");
     if(tokens != NULL){
@@ -674,7 +677,34 @@ void analizar(char comando[])
     }
     printf("El nombre es: %s\n", nombre);
     printf("La Direccion es: %s\n", dir);
+    FILE *part = fopen(dir, "r+b");
+    if(fopen(dir, "r+b")==NULL){
+    printf("La particion no existe");
+    } else{
+    fread (&m, sizeof(m), 1,part);
+    fclose(part);
+    printf("%s", m.mbr_partition_1.part_name); printf("%s", nombre);
+    if(strcasecmp(m.mbr_partition_1.part_name, nombre)==0 || strcasecmp(m.mbr_partition_2.part_name, nombre)==0 || strcasecmp(m.mbr_partition_3.part_name, nombre)==0 || strcasecmp(m.mbr_partition_4.part_name, nombre)==0 ){
+    int i=0; int enumerador =1; char id[] = "vd";
+    while(i<10){
+    if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
+    strcpy(monta[i][0], dir);
+    while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
+    enumerador++;
     }
+    strcpy(monta[i][enumerador], nombre);
+    strcpy(id, letra[i]); strcpy(id, i);
+    printf(id);
+    }else{
+    i++;
+    }
+    }
+
+    }
+    }
+
+    }
+
 
     else if(strcasecmp(token, "umount") == 0){
     tokens = comando;
