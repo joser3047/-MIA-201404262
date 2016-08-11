@@ -87,6 +87,23 @@ FILE *disco;
 
 fread (&mbr, sizeof(mbr), 1,disco);
 
+if((strcmp(delet,"") == 0) && (strcmp(add,"") == 0) && strcasecmp(type, "p")==0){
+if(mbr.mbr_partition_1.part_status=='0'){
+if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+strcpy(mbr.mbr_partition_1.part_name, name);
+mbr.mbr_partition_1.part_start = sizeof(mbr);
+mbr.mbr_partition_1.part_status = '1';
+mbr.mbr_partition_1.part_size = atoi(size)*1024;
+mbr.mbr_partition_1.part_type = 'p';
+mbr.mbr_partition_1.part_fit = fit;
+printf("Se creo la particion", name);
+}else
+{
+printf("Tamaño insuficiente");
+}
+}
+
+}
 }
 }
 
@@ -560,16 +577,10 @@ void analizar(char comando[])
     printf("Tipo de particion incorrecto");
     }
     if(strcasecmp(ajuste,"bf")==0 || strcasecmp(ajuste,"ff")==0 || strcasecmp(ajuste,"wf")==0){
-    }else if(strcasecmp(tipo,"")==0){
-                strcpy(tipo, "wf");
+    }else if(strcasecmp(ajuste,"")==0){
+                strcpy(ajuste, "wf");
     }else{
     printf("Ajuste incorrecto");
-    }
-    if(strcasecmp(borrar,"full")==0 || strcasecmp(ajuste,"fast")==0){
-    }else if(strcasecmp(tipo,"")==0){
-                strcpy(tipo, "fast");
-    }else{
-    printf("delete incorrecto");
     }
     particion(tamano, unidad, nombre, dir, tipo, ajuste, borrar, agregar);
     }
