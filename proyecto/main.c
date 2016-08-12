@@ -75,7 +75,29 @@ struct Journal{
 char comando[];
 int tam;
 char letra[28] = "abcdefghijklmnopqrstuvwxyz";
-char monta [10][10][50];
+char monta [50][50][50];
+
+
+char **split ( char *string, const char sep) {
+
+char **list;
+char *p = string;
+int i = 0;
+
+int pos;
+const int len = strlen (string);
+
+list = (char **) malloc (sizeof (char *));
+if (list == NULL) {
+return NULL;
+}
+	list[pos=0] = NULL;
+
+while (i < len) { while ((p[i] == sep) && (i < len)) i++; if (i < len) { char **tmp = (char **) realloc (list , (pos + 2) * sizeof (char *)); if (tmp == NULL) { /* Cannot allocate memory */ free (list); return NULL; } list = tmp; tmp = NULL; list[pos + 1] = NULL; list[pos] = (char *) malloc (sizeof (char)); if (list[pos] == NULL) { /* Cannot allocate memory */ for (i = 0; i < pos; i++) free (list[i]); free (list); return NULL; } int j = 0; for (i; ((p[i] != sep) && (i < len)); i++) { list[pos][j] = p[i]; j++; char *tmp2 = (char *) realloc (list[pos],(j + 1) * sizeof (char)); if (list[pos] == NULL) { /* Cannot allocate memory */ for (i = 0; i < pos; i++) free (list[i]); free (list); return NULL; } list[pos] = tmp2; tmp2 = NULL; } list[pos][j] = '\0'; pos++; } } return list; }
+
+
+
+
 
 void particion(char size[], char unit[], char name[], char path[], char type[], char fit[], char delet[], char add[]){
 struct MBR mbr;
@@ -92,13 +114,15 @@ fread (&mbr, sizeof(mbr), 1,disco);
 if((strcmp(delet,"") == 0) && (strcmp(add,"") == 0) && strcasecmp(type, "p")==0){
 if(mbr.mbr_partition_1.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+if(strcasecmp(mbr.mbr_partition_2.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_3.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_4.part_name, name) !=0){
 strcpy(mbr.mbr_partition_1.part_name, name);
 mbr.mbr_partition_1.part_start = sizeof(mbr);
 mbr.mbr_partition_1.part_status = '1';
 mbr.mbr_partition_1.part_size = atoi(size)*1024;
 mbr.mbr_partition_1.part_type = 'p';
 mbr.mbr_partition_1.part_fit = fit;
-printf("Se creo la particion 1", name);
+printf("Se creo la particion 1", name);}
+else{printf("Ya existe una particion con este nombre");}
 }else
 {
 printf("Tamaño insuficiente");
@@ -106,13 +130,15 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_2.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+if(strcasecmp(mbr.mbr_partition_1.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_3.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_4.part_name, name) !=0){
 strcpy(mbr.mbr_partition_2.part_name, name);
 mbr.mbr_partition_2.part_start = sizeof(mbr);
 mbr.mbr_partition_2.part_status = '1';
 mbr.mbr_partition_2.part_size = atoi(size)*1024;
 mbr.mbr_partition_2.part_type = 'p';
 mbr.mbr_partition_2.part_fit = fit;
-printf("Se creo la particion 2", name);
+printf("Se creo la particion 2", name);}
+else{printf("Ya existe una particion con este nombre");}
 }else
 {
 printf("Tamaño insuficiente");
@@ -120,13 +146,15 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_3.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+if(strcasecmp(mbr.mbr_partition_1.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_2.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_4.part_name, name) !=0){
 strcpy(mbr.mbr_partition_3.part_name, name);
 mbr.mbr_partition_3.part_start = sizeof(mbr);
 mbr.mbr_partition_3.part_status = '1';
 mbr.mbr_partition_3.part_size = atoi(size)*1024;
 mbr.mbr_partition_3.part_type = 'p';
 mbr.mbr_partition_3.part_fit = fit;
-printf("Se creo la particion 3", name);
+printf("Se creo la particion 3", name);}
+else{printf("Ya existe una particion con este nombre");}
 }else
 {
 printf("Tamaño insuficiente");
@@ -134,13 +162,15 @@ printf("Tamaño insuficiente");
 }
 else if(mbr.mbr_partition_4.part_status=='0'){
 if(mbr.mbr_tamano - sizeof(mbr) >= atoi(size)*1024){
+if(strcasecmp(mbr.mbr_partition_1.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_2.part_name, name)!=0 && strcasecmp(mbr.mbr_partition_3.part_name, name) !=0){
 strcpy(mbr.mbr_partition_4.part_name, name);
 mbr.mbr_partition_4.part_start = sizeof(mbr);
 mbr.mbr_partition_4.part_status = '1';
 mbr.mbr_partition_4.part_size = atoi(size)*1024;
 mbr.mbr_partition_4.part_type = 'p';
 mbr.mbr_partition_4.part_fit = fit;
-printf("Se creo la particion 4", name);
+printf("Se creo la particion 4", name);}
+else{printf("Ya existe una particion con este nombre");}
 }else
 {
 printf("Tamaño insuficiente");
@@ -163,7 +193,7 @@ void analizar(char comando[])
     char *tokens;
     char *size="";    char *unit="";    char *name="";    char *path=""; char *type=""; char *fit=""; char *delet=""; char *add="";
     char tamano[100]="";    char unidad[2]="";     char nombre[100]="";   char dir[100]=""; char tipo[10]=""; char ajuste[10]="";  char borrar[10]="";char agregar[10]="";
-    int contador = 0;
+    int contador = 0; char **comodin;
     token = strtok(comando, " ");
     if (strcasecmp(token, "mkdisk") == 0) {
     tokens = comando;
@@ -191,7 +221,8 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, strtok(tokens, "\""));}
+    strcpy(dir, strtok(tokens, "\""));
+    }
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
     strcpy(nombre, strtok(tokens, "\""));}
@@ -286,7 +317,7 @@ void analizar(char comando[])
         struct tm *timel = localtime(&t);
         strftime(master.mbr_fecha_creacion,128,"%d/%m/%y %H:%M:%S",timel);
         master.mbr_tamano = tamano;
-        master.mbr_disk_signature = rand();
+        master.mbr_disk_signature = 1;
         master.mbr_partition_1.part_status = '0';
         master.mbr_partition_2.part_status = '0';
         master.mbr_partition_3.part_status = '0';
@@ -690,7 +721,7 @@ void analizar(char comando[])
     fread (&m, sizeof(m), 1,part);
     if(strcasecmp(m.mbr_partition_1.part_name, nombre)==0){
     int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
-    while(i<10){
+    while(i<50){
     if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
     strcpy(monta[i][0], dir);
     while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
@@ -698,6 +729,8 @@ void analizar(char comando[])
     }
     strcpy(monta[i][enumerador], nombre);
     sprintf(id, "vd%c%d", letra[0], enumerador);
+    strcpy(monta[i][enumerador+1], id);
+    strcpy(monta[i][enumerador+2], "1");
     printf("id asignado %s", id);
     m.mbr_partition_1.part_status = 'm';
     break;
@@ -707,7 +740,7 @@ void analizar(char comando[])
     }
     }else if(strcasecmp(m.mbr_partition_2.part_name, nombre)==0){
     int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
-    while(i<10){
+    while(i<50){
     if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
     strcpy(monta[i][0], dir);
     while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
@@ -715,6 +748,8 @@ void analizar(char comando[])
     }
     strcpy(monta[i][enumerador], nombre);
     sprintf(id, "vd%c%d", letra[0], enumerador);
+    strcpy(monta[i][enumerador+1], id);
+    strcpy(monta[i][enumerador+2], "2");
     printf("id asignado %s", id);
     m.mbr_partition_2.part_status = 'm';
     break;
@@ -724,7 +759,7 @@ void analizar(char comando[])
     }
     }else if(strcasecmp(m.mbr_partition_3.part_name, nombre)==0){
     int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
-    while(i<10){
+    while(i<50){
     if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
     strcpy(monta[i][0], dir);
     while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
@@ -732,6 +767,8 @@ void analizar(char comando[])
     }
     strcpy(monta[i][enumerador], nombre);
     sprintf(id, "vd%c%d", letra[0], enumerador);
+    strcpy(monta[i][enumerador+1], id);
+    strcpy(monta[i][enumerador+2], "3");
     printf("id asignado %s", id);
     m.mbr_partition_3.part_status = 'm';
     break;
@@ -741,7 +778,7 @@ void analizar(char comando[])
     }
     }else if(strcasecmp(m.mbr_partition_4.part_name, nombre)==0){
     int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
-    while(i<10){
+    while(i<50){
     if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
     strcpy(monta[i][0], dir);
     while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
@@ -749,6 +786,8 @@ void analizar(char comando[])
     }
     strcpy(monta[i][enumerador], nombre);
     sprintf(id, "vd%c%d", letra[0], enumerador);
+    strcpy(monta[i][enumerador+1], id);
+    strcpy(monta[i][enumerador+2], "4");
     printf("id asignado %s", id);
     m.mbr_partition_4.part_status = 'm';
     break;
@@ -773,6 +812,41 @@ void analizar(char comando[])
     tokens = strtok(NULL, "::");
     strcpy(dir, tokens);}
     printf("El id es: %s\n", dir);
+    int s = 0; int a = 0; char *prueba = "";
+    while(strcasecmp(monta[s][2],dir) != 0){
+    s++;
+    if(s > 50){
+    prueba = "error";
+    break;
+    }
+    }
+    if(strcasecmp(prueba, "error")!=0){
+    char *ruta = monta[s][0]; char id[2];
+    strcpy(id, monta[s][3]);
+    struct MBR m;
+    FILE *part;
+    part = fopen(monta[s][0], "r+b");
+    fseek(part,0,SEEK_SET);
+    fread (&m, sizeof(m), 1,part); int t = 0;
+    while(t < 4){
+    strcpy(monta[s][t], "");
+    t++;
+    }
+    if(strcasecmp(id, "1")==0){
+    m.mbr_partition_1.part_status = 'u';
+    printf("Particion %s fue desmontada", dir);
+    }else if(strcasecmp(id, "2")==0){
+    m.mbr_partition_2.part_status = 'u';
+    printf("Particion %s fue desmontada", dir);
+    }else if(strcasecmp(id, "3")==0){
+    m.mbr_partition_3.part_status = 'u';
+    printf("Particion %s fue desmontada", dir);
+    }else if(strcasecmp(id, "4")==0){
+    m.mbr_partition_4.part_status = 'u';
+    printf("Particion %s fue desmontada", dir);
+    }
+    }else{printf("error, id no existe");}
+
     }
 
 
@@ -904,17 +978,220 @@ else if(strcasecmp(token, "exec") == 0){
     printf("La Direccion es: %s\n", dir);
     printf("La ruta es: %s\n", tamano);
     printf("El id es: %s\n", tipo);
+    if(strcasecmp(nombre, "mbr")==0){
+    int s = 0; int a = 0; char *prueba = "";
+    while(strcasecmp(monta[s][2],tipo) != 0){
+    printf("%i", s);
+    printf("%s", monta[s][2]);
+    s++;
+    if(s > 50){
+    prueba = "error";
+    break;
+    }
+    }
+    if(strcasecmp(prueba, "error")!=0){
+    struct MBR mabore;
+    FILE *part;
+    part = fopen(monta[s][0], "r+b");
+    fseek(part,0,SEEK_SET);
+    fread (&mabore, sizeof(mabore), 1,part);
+    FILE *fp;
+ 	fp = fopen ("re.dot", "w+");
+    fprintf(fp," digraph mbr {\n");
+    fprintf(fp,"label=<<B>Master Boot Record: %s</B>>;\n",dir);
+    fprintf(fp,"fontsize=17;");
+    fprintf(fp,"node [shape=plaintext fontname = \"Ubuntu\"];\n");
+
+    fprintf(fp,"MBR [label=<<table border=\"1\" cellborder=\"1\" cellspacing=\"0\">\n");
+    fprintf(fp,"<tr><td bgcolor=\"#033670\"><b>Nombre</b></td><td bgcolor=\"#033670\"><b>Valor</b></td></tr> \n");
+
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>mbr_tamaño</b></td><td>%i</td></tr>\n",mabore.mbr_tamano);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>mbr_fecha_creacion</b></td><td>%s</td></tr>\n",mabore.mbr_fecha_creacion);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>mbr_disk_signature</b></td><td>%i</td></tr>\n",mabore.mbr_disk_signature);
+
+    if(mabore.mbr_partition_1.part_status != '0'){
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_status_1</b></td><td>%c</td></tr>\n",mabore.mbr_partition_1.part_status);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_type_1</b></td><td>%c</td></tr>\n",mabore.mbr_partition_1.part_type);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_fit_1</b></td><td>%c</td></tr>\n",mabore.mbr_partition_1.part_fit);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_start_1</b></td><td>%d</td></tr>\n",mabore.mbr_partition_1.part_start);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_size_1</b></td><td>%d</td></tr>\n",mabore.mbr_partition_1.part_size);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_name_1</b></td><td>%s</td></tr>\n",mabore.mbr_partition_1.part_name);}
+
+    if(mabore.mbr_partition_2.part_status != '0'){
+	fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_status_2</b></td><td>%c</td></tr>\n",mabore.mbr_partition_2.part_status);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_type_2</b></td><td>%c</td></tr>\n",mabore.mbr_partition_2.part_type);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_fit_2</b></td><td>%c</td></tr>\n",mabore.mbr_partition_2.part_fit);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_start_2</b></td><td>%d</td></tr>\n",mabore.mbr_partition_2.part_start);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_size_2</b></td><td>%d</td></tr>\n",mabore.mbr_partition_2.part_size);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_name_2</b></td><td>%s</td></tr>\n",mabore.mbr_partition_2.part_name);}
+
+    if(mabore.mbr_partition_3.part_status != '0'){
+	fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_status_3</b></td><td>%c</td></tr>\n",mabore.mbr_partition_3.part_status);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_type_3</b></td><td>%c</td></tr>\n",mabore.mbr_partition_3.part_type);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_fit_3</b></td><td>%c</td></tr>\n",mabore.mbr_partition_3.part_fit);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_start_3</b></td><td>%d</td></tr>\n",mabore.mbr_partition_3.part_start);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_size_3</b></td><td>%d</td></tr>\n",mabore.mbr_partition_3.part_size);
+    fprintf(fp,"<tr><td bgcolor=\"#275EA6\"><b>part_name_3</b></td><td>%s</td></tr>\n",mabore.mbr_partition_3.part_name);}
+
+    if(mabore.mbr_partition_4.part_status != '0'){
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_status_4</b></td><td>%c</td></tr>\n",mabore.mbr_partition_4.part_status);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_type_4</b></td><td>%c</td></tr>\n",mabore.mbr_partition_4.part_type);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_fit_4</b></td><td>%c</td></tr>\n",mabore.mbr_partition_4.part_fit);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_start_4</b></td><td>%d</td></tr>\n",mabore.mbr_partition_4.part_start);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_size_4</b></td><td>%d</td></tr>\n",mabore.mbr_partition_4.part_size);
+    fprintf(fp,"<tr><td bgcolor=\"#9BC4F3\"><b>part_name_4</b></td><td>%s</td></tr>\n",mabore.mbr_partition_4.part_name);}
+
+    fprintf(fp,"</table>>];}\n");
+    fclose ( fp );
+
+    char com[100];
+    strcpy(com,"dot -Tpng re.dot -o ");
+    strcat(com, dir);
+    system(com);
+    char con[100];
+    strcpy(con, "gnome-open ");
+    system("gnome-open re.dot");
+    strcat(con, dir);
+    system(con);
+    }
+    }else if(strcasecmp(nombre, "disk")==0){
+    int s = 0; int a = 0; char *prueba = "";
+    while(strcasecmp(monta[s][2],tipo) != 0){
+    printf("%i", s);
+    printf("%s", monta[s][2]);
+    s++;
+    if(s > 50){
+    prueba = "error";
+    break;
+    }
+    }
+    if(strcasecmp(prueba, "error")!=0){
+    struct MBR mabore;
+    FILE *part;
+    part = fopen(monta[s][0], "r+b");
+    fseek(part,0,SEEK_SET);
+    fread (&mabore, sizeof(mabore), 1,part);
+    FILE *fp;
+ 	fp = fopen ("disk.dot", "w+" );
+    fprintf(fp," digraph {\n");
+
+    fprintf(fp,"label=<<B>%s</B>>;\n",dir);
+    fprintf(fp,"fontsize=17;");
+    fprintf(fp,"node [shape=plaintext fontname = \"Ubuntu\"];\n");
+    fprintf(fp,"node [shape=plaintext fontname = \"Ubuntu\"];\n");
+    fprintf(fp,"graph [fontname = \"Ubuntu\"];\n");
+
+    fprintf(fp,"b [label=<");
+    fprintf(fp,"<TABLE>");
+    fprintf(fp,"<TR>");
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\" WIDTH=\"%i\"><b>MBR</b></TD>", ((sizeof(mabore) * 60000) /mabore.mbr_tamano ));
+
+    if(mabore.mbr_partition_1.part_status =='0' && mabore.mbr_partition_2.part_status == '0' && mabore.mbr_partition_3.part_status =='0' && mabore.mbr_partition_4.part_status =='0'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\" COLSPAN=\"3\" ALIGN=\"center\" PORT=\"there\"><b>Libre</b></TD>");
+    }else{
+
+    if(mabore.mbr_partition_1.part_status =='0'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    }else{
+
+
+    if(mabore.mbr_partition_1.part_type == 'p'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\" WIDTH=\"%i\"><b>Primaria</b></TD>",((mabore.mbr_partition_1.part_size * 60000) /mabore.mbr_tamano ));
+
+    }else{
+    fprintf(fp,"<TD><TABLE BORDER=\"2\"><TR>");
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    fprintf(fp,"</TR>");
+    }
+    }
+
+    if(mabore.mbr_partition_2.part_status == '0'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    }else{
+
+
+    if(mabore.mbr_partition_2.part_type == 'p'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\" WIDTH=\"%i\"><b>Primaria</b></TD>",((mabore.mbr_partition_2.part_size * 60000) /mabore.mbr_tamano ));
+
+    }else{
+    fprintf(fp,"<TD><TABLE BORDER=\"2\"><TR>");
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    fprintf(fp,"</TR>");
+    }
+    }
+
+
+    if(mabore.mbr_partition_3.part_status =='0'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    }else{
+
+
+    if(mabore.mbr_partition_3.part_type == 'p'){
+    fprintf(fp,"<TD ALIGN=\"center\"  BORDER=\"1\" WIDTH=\"%i\"><b>Primaria</b></TD>",((mabore.mbr_partition_3.part_size * 60000) /mabore.mbr_tamano ));
+
+    }else{
+    fprintf(fp,"<TD><TABLE BORDER=\"2\"><TR>");
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    fprintf(fp,"</TR>");
+    }
+    }
+
+
+    if(mabore.mbr_partition_4.part_status == '0'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    }else{
+
+
+    if(mabore.mbr_partition_4.part_type == 'p'){
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\" WIDTH=\"%i\"><b>Primaria</b></TD>",((mabore.mbr_partition_4.part_size * 60000) /mabore.mbr_tamano ));
+
+    }else{
+    fprintf(fp,"<TD><TABLE BORDER=\"2\"><TR>");
+    fprintf(fp,"<TD ALIGN=\"center\" BORDER=\"1\"><b>Libre</b></TD>");
+    fprintf(fp,"</TR>");
+    }
+    }
+    }
+    fprintf(fp,"</TR>");
+    fprintf(fp,"</TABLE>>];");
+    fprintf(fp,"}\n");
+    fclose(fp);
+    char com[100];
+    strcpy(com,"dot -Tpng disk.dot -o ");
+    strcat(com, dir);
+    system(com);
+    char con[100];
+    strcpy(con, "gnome-open ");
+    system("gnome-open disk.dot");
+    strcat(con, dir);
+    system(con);
+    }
+    }
     }
 
 }
 
 
 void main(){
-int ctokens=1;
+int ctokens=1; char t[200]; char h[400];
+    time_t to;
+    srand((unsigned) time(&to));
     while(ctokens==1){
     scanf(" %[^\n]s", comando);
     if(comando[0]=="#"){
     }
     else{
-    analizar(comando);}}
+    if (comando[strlen(comando)-1] == '\\')
+    {
+    	scanf(" %[^\n]s", t);
+        strncpy(h, comando, strlen(comando)-1);
+        strcat(h, t);
+        strcpy(comando, h);
+        analizar(comando);
+    }
+    else
+    {
+        analizar(comando);
+    }
+    }}
 }

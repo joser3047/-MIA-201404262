@@ -1,0 +1,23 @@
+digraph mbr {
+label=<<B>Master Boot Record: g.png</B>>;
+fontsize=17;
+node [shape=plaintext fontname = "Ubuntu"];
+node [shape=plaintext fontname = "Ubuntu"];
+graph [fontname = "Ubuntu"];
+MBR [label=<<table><tr><td><b>Nombre</b></td><td><b>Valor</b></td></tr> 
+<tr><td><b>mbr_tamano</b></td><td>1128315872</td></tr>
+<tr><td><b>mbr_fecha_creacion</b></td><td></td></tr>
+<tr><td><b>mbr_disk_signature</b></td><td>1804289383</td></tr>
+<tr><td><b>part_status_1</b></td><td>1</td></tr>
+<tr><td><b>part_type_1</b></td><td>p</td></tr>
+<tr><td><b>part_fit_1</b></td><td>j</td></tr>
+<tr><td><b>part_start_1</b></td><td>192</td></tr>
+<tr><td><b>part_size_1</b></td><td>102400</td></tr>
+<tr><td><b>part_name_1</b></td><td>part</td></tr>
+<tr><td><b>part_status_2</b></td><td>1</td></tr>
+<tr><td><b>part_type_2</b></td><td>p</td></tr>
+<tr><td><b>part_fit_2</b></td><td></td></tr>
+<tr><td><b>part_start_2</b></td><td>192</td></tr>
+<tr><td><b>part_size_2</b></td><td>102400</td></tr>
+<tr><td><b>part_name_2</b></td><td>par</td></tr>
+</table>>];}
