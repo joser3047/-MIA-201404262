@@ -74,8 +74,8 @@ struct Journal{
 
 char comando[];
 int tam;
-char letra[] = "abcdefghijklmnopqrstuvwxyz";
-char monta [10][10][50] = {""};
+char letra[28] = "abcdefghijklmnopqrstuvwxyz";
+char monta [10][10][50];
 
 void particion(char size[], char unit[], char name[], char path[], char type[], char fit[], char delet[], char add[]){
 struct MBR mbr;
@@ -191,10 +191,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -210,10 +210,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -229,10 +229,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -248,10 +248,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -312,7 +312,7 @@ void analizar(char comando[])
     tokens = strtok(path, "::");
     if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     if(fopen(dir, "r")==NULL){
     printf("El disco no existe");
     } else{
@@ -360,10 +360,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -391,10 +391,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -422,10 +422,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -453,10 +453,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -484,10 +484,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -514,10 +514,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -544,10 +544,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -574,10 +574,10 @@ void analizar(char comando[])
     strcpy(unidad, tokens);}
     else if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "+type") == 0){
     tokens = strtok(NULL, "::");
     strcpy(tipo, tokens);}
@@ -652,10 +652,10 @@ void analizar(char comando[])
     tokens = strtok(path, "::");
     if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -665,10 +665,10 @@ void analizar(char comando[])
     tokens = strtok(name, "::");
     if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     else if(strcasecmp(tokens, "-name") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(nombre, tokens);}
+    strcpy(nombre, strtok(tokens, "\""));}
     else{
     tokens = strtok(NULL, "::");
     printf("Error en el comando: %s", tokens);
@@ -677,15 +677,15 @@ void analizar(char comando[])
     }
     printf("El nombre es: %s\n", nombre);
     printf("La Direccion es: %s\n", dir);
-    FILE *part = fopen(dir, "r+b");
+    FILE *part;
     if(fopen(dir, "r+b")==NULL){
     printf("La particion no existe");
     } else{
+    part = fopen(dir, "r+b");
+    fseek(part,0,SEEK_SET);
     fread (&m, sizeof(m), 1,part);
-    fclose(part);
-    printf("%s", m.mbr_partition_1.part_name); printf("%s", nombre);
-    if(strcasecmp(m.mbr_partition_1.part_name, nombre)==0 || strcasecmp(m.mbr_partition_2.part_name, nombre)==0 || strcasecmp(m.mbr_partition_3.part_name, nombre)==0 || strcasecmp(m.mbr_partition_4.part_name, nombre)==0 ){
-    int i=0; int enumerador =1; char id[] = "vd";
+    if(strcasecmp(m.mbr_partition_1.part_name, nombre)==0){
+    int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
     while(i<10){
     if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
     strcpy(monta[i][0], dir);
@@ -693,14 +693,66 @@ void analizar(char comando[])
     enumerador++;
     }
     strcpy(monta[i][enumerador], nombre);
-    strcpy(id, letra[i]); strcpy(id, i);
-    printf(id);
+    sprintf(id, "vd%c%d", letra[0], enumerador);
+    printf("id asignado %s", id);
+    m.mbr_partition_1.part_status = 'm';
+    break;
     }else{
     i++;
     }
     }
-
+    }else if(strcasecmp(m.mbr_partition_2.part_name, nombre)==0){
+    int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
+    while(i<10){
+    if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
+    strcpy(monta[i][0], dir);
+    while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
+    enumerador++;
     }
+    strcpy(monta[i][enumerador], nombre);
+    sprintf(id, "vd%c%d", letra[0], enumerador);
+    printf("id asignado %s", id);
+    m.mbr_partition_2.part_status = 'm';
+    break;
+    }else{
+    i++;
+    }
+    }
+    }else if(strcasecmp(m.mbr_partition_3.part_name, nombre)==0){
+    int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
+    while(i<10){
+    if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
+    strcpy(monta[i][0], dir);
+    while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
+    enumerador++;
+    }
+    strcpy(monta[i][enumerador], nombre);
+    sprintf(id, "vd%c%d", letra[0], enumerador);
+    printf("id asignado %s", id);
+    m.mbr_partition_3.part_status = 'm';
+    break;
+    }else{
+    i++;
+    }
+    }
+    }else if(strcasecmp(m.mbr_partition_4.part_name, nombre)==0){
+    int i=0; int enumerador =1; char *id = malloc(sizeof(char) * 128);
+    while(i<10){
+    if((strcasecmp(monta[i][0],"")==0) || (strcasecmp(monta[i][0], dir)==0)){
+    strcpy(monta[i][0], dir);
+    while ((strcasecmp(monta[i][enumerador], "") != 0)&&(strcasecmp(monta[i][enumerador], nombre) != 0)){
+    enumerador++;
+    }
+    strcpy(monta[i][enumerador], nombre);
+    sprintf(id, "vd%c%d", letra[0], enumerador);
+    printf("id asignado %s", id);
+    m.mbr_partition_4.part_status = 'm';
+    break;
+    }else{
+    i++;
+    }
+    }
+    }fclose(part);
     }
 
     }
@@ -729,7 +781,7 @@ else if(strcasecmp(token, "exec") == 0){
     tokens = strtok(path, "::");
     if(strcasecmp(tokens, "-path") == 0){
     tokens = strtok(NULL, "::");
-    strcpy(dir, tokens);}
+    strcpy(dir, strtok(tokens, "\""));}
     printf("El id es: %s\n", dir);
     FILE *Fich = fopen (dir, "r");
     char Archivo[250]="";    char Archivot[250]="";
@@ -757,5 +809,8 @@ void main(){
 int ctokens=1;
     while(ctokens==1){
     scanf(" %[^\n]s", comando);
-    analizar(comando);}
+    if(comando[0]=="#"){
+    }
+    else{
+    analizar(comando);}}
 }
