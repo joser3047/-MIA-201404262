@@ -340,13 +340,17 @@ void analizar(char comando[])
     } tokens = strtok(NULL, " ");
     if(tokens != NULL){
         path = tokens; contador++;
-    }if(tokens != NULL){
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
         type = tokens; contador++;
-    }if(tokens != NULL){
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
         fit = tokens; contador++;
-    }if(tokens != NULL){
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
         delet = tokens; contador++;
-    }if(tokens != NULL){
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
         add = tokens; contador++;
     }int cont = 0;
     while(cont < contador){
@@ -800,6 +804,106 @@ else if(strcasecmp(token, "exec") == 0){
     }
     fclose(Fich);
     }
+    }
+
+
+
+    else if(strcasecmp(token, "rep") == 0){
+    tokens = comando;
+    tokens = strtok(NULL, " ");
+    if(tokens != NULL){
+        path = tokens; contador++;
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
+        name = tokens; contador++;
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
+        type = tokens; contador++;
+    } tokens = strtok(NULL, " ");
+    if(tokens != NULL){
+        size = tokens; contador++;
+    }
+    int cont = 0;
+    while(cont < contador){
+    if(cont == 0 && strcasecmp(path, "") != 0){
+    tokens = strtok(path, "::");
+    if(strcasecmp(tokens, "-path") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(dir, strtok(tokens, "\""));}
+    else if(strcasecmp(tokens, "-name") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(nombre, tokens);}
+    else if(strcasecmp(tokens, "-id") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tipo, tokens);}
+    else if(strcasecmp(tokens, "+ruta") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tamano, strtok(tokens, "\""));}
+    else{
+    tokens = strtok(NULL, "::");
+    printf("Error en el comando: %s", tokens);
+    }
+    }else if(cont == 1 && strcasecmp(name, "") != 0){
+    tokens = strtok(name, "::");
+    if(strcasecmp(tokens, "-path") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(dir, strtok(tokens, "\""));}
+    else if(strcasecmp(tokens, "-name") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(nombre, tokens);}
+    else if(strcasecmp(tokens, "-id") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tipo, tokens);}
+    else if(strcasecmp(tokens, "+ruta") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tamano, strtok(tokens, "\""));}
+    else{
+    tokens = strtok(NULL, "::");
+    printf("Error en el comando: %s", tokens);
+    }
+    }else if(cont == 2 && strcasecmp(type, "") != 0){
+    tokens = strtok(type, "::");
+    if(strcasecmp(tokens, "-path") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(dir, strtok(tokens, "\""));}
+    else if(strcasecmp(tokens, "-name") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(nombre, tokens);}
+    else if(strcasecmp(tokens, "-id") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tipo, tokens);}
+    else if(strcasecmp(tokens, "+ruta") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tamano, strtok(tokens, "\""));}
+    else{
+    tokens = strtok(NULL, "::");
+    printf("Error en el comando: %s", tokens);
+    }
+    }
+    else if(cont == 3 && strcasecmp(size, "") != 0){
+    tokens = strtok(size, "::");
+    if(strcasecmp(tokens, "-path") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(dir, strtok(tokens, "\""));}
+    else if(strcasecmp(tokens, "-name") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(nombre, tokens);}
+    else if(strcasecmp(tokens, "-id") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tipo, tokens);}
+    else if(strcasecmp(tokens, "+ruta") == 0){
+    tokens = strtok(NULL, "::");
+    strcpy(tamano, strtok(tokens, "\""));}
+    else{
+    tokens = strtok(NULL, "::");
+    printf("Error en el comando: %s", tokens);
+    }
+    }cont ++;
+    }
+    printf("El nombre es: %s\n", nombre);
+    printf("La Direccion es: %s\n", dir);
+    printf("La ruta es: %s\n", tamano);
+    printf("El id es: %s\n", tipo);
     }
 
 }
