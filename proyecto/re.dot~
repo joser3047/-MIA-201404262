@@ -1,0 +1,16 @@
+digraph mbr {
+label=<<B>Master Boot Record: i.png</B>>;
+fontsize=17;node [shape=plaintext fontname = "Ubuntu"];
+MBR [label=<<table border="1" cellborder="1" cellspacing="0">
+<tr><td bgcolor="#033670"><b>Nombre</b></td><td bgcolor="#033670"><b>Valor</b></td></tr> 
+<tr><td><b>mbr_tamaño</b></td><td>1919743552</td></tr>
+<tr><td><b>mbr_fecha_creacion</b></td><td>Tue Feb  5 17:00:32 4461552
+</td></tr>
+<tr><td><b>mbr_disk_signature</b></td><td>1804289383</td></tr>
+<tr><td><b>part_status_1</b></td><td>1</td></tr>
+<tr><td><b>part_type_1</b></td><td>p</td></tr>
+<tr><td><b>part_fit_1</b></td><td></td></tr>
+<tr><td><b>part_start_1</b></td><td>192</td></tr>
+<tr><td><b>part_size_1</b></td><td>102400</td></tr>
+<tr><td><b>part_name_1</b></td><td>part</td></tr>
+</table>>];}
